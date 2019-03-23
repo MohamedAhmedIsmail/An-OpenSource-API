@@ -62,8 +62,8 @@ class UrlController extends Controller
             'message'=>'Sorry url with id '. $id . 'cannot be found'
           ],400);
         }
-        $updated=$url->fill($request->all())->save();
-        if($updated)
+        $url->update($request->all());
+        if($url)
         {
           return response()->json([
             'success' => true
@@ -87,7 +87,7 @@ class UrlController extends Controller
             'message' => 'Sorry, url with id ' . $id . ' cannot be found'
         ], 400);
     }
-    if ($product->delete()) 
+    if ($url->delete()) 
     {
         return response()->json([
             'success' => true
