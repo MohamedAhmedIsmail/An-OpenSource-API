@@ -101,4 +101,5 @@ class UrlController extends Controller
         ], 500);
     }
   }
+  
 }

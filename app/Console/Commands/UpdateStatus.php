@@ -3,7 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Mail\MyMail;
 use App\Url;
+use App\User;
+use Mail;
 class UpdateStatus extends Command
 {
     /**
@@ -44,9 +47,16 @@ class UpdateStatus extends Command
             {
                 $url->status=1;
                 $url->save();
-                $this->Info($url->url);
+                $this->Info($url->url." is up and running");
             }
-           
+            else
+            {
+                $url->status=0;
+                $url->save();
+                $this->Info($url->url." is down");
+                $user=User::where('id','=',$url->user_id)->first();
+                $this->mail($user->email,$url->url);
+            }
         }
     }
     public function checkUrlStatus($url)
@@ -72,5 +82,14 @@ class UpdateStatus extends Command
         { 
             return false;
         }
+    }
+    public function mail($userEmail,$url)
+    {
+        $mail=$userEmail;
+        Mail::send('email.myemail', ['url' => $url], function ($m) use ($mail) 
+        {
+            $m->from('no-reply@test.com', 'no-reply');
+            $m->to($mail)->subject('Website is down');
+        });
     }
 }
