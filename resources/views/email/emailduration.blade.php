@@ -1,0 +1,1 @@
+<h1>your Website {{$url}} was down for {{$duration}} and now is running</h1>

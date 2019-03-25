@@ -8,9 +8,10 @@ use JWTAuth;
 class UrlController extends Controller
 {
     protected $user;
+    
     public function __construct()
     {
-      $this->user=JWTAuth::parseToken()->authenticate();
+      $this->user = JWTAuth::parseToken()->authenticate();
     }
     public function index()
     {
@@ -18,12 +19,12 @@ class UrlController extends Controller
     }
     public function show($id)
     {
-      $url=$this->user->Url()->find($id);
+      $url = $this->user->Url()->find($id);
       if(!$url)
       {
         return response()->json([
-          'success'=>false,
-          'message'=>'Sorry the url with id '.$id . 'Cant be found' 
+          'success' => false,
+          'message' => 'Sorry the url with id '.$id . 'Cant be found' 
         ],400);
       }
       return $url;
@@ -31,17 +32,17 @@ class UrlController extends Controller
     public function store(Request $request)
     {
       $this->validate($request,[
-        'url'=>'required',
-        'status'=>'required'
+        'url' => 'required',
+        'status' => 'required'
       ]);
-      $url=new Url;
-      $url->url=$request->url;
-      $url->status=$request->status;
+      $url = new Url;
+      $url->url = $request->url;
+      $url->status = $request->status;
       if($this->user->Url()->save($url))  
       {
         return response()->json([
-          'success'=>true,
-          'url'=>$url
+          'success' => true,
+          'url' => $url
         ]);
       }
       else
@@ -54,12 +55,12 @@ class UrlController extends Controller
     }
     public function update(Request $request,$id)
     {
-        $url=$this->user->Url()->find($id);
+        $url = $this->user->Url()->find($id);
         if(!$url)
         {
           return response()->json([
-            'success'=>false,
-            'message'=>'Sorry url with id '. $id . 'cannot be found'
+            'success' => false,
+            'message' => 'Sorry url with id '. $id . 'cannot be found'
           ],400);
         }
         $url->update($request->all());
